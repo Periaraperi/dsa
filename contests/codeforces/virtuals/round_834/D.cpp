@@ -13,6 +13,7 @@ int get_zeros(long long x)
     return zero;
 }
 
+
 int main()
 {
     ios::sync_with_stdio(false);
