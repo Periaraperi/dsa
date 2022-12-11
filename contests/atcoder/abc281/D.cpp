@@ -22,14 +22,16 @@ int main()
         auto INF = numeric_limits<long long>::min();
         vector<vector<vector<long long>>> dp(n+1,vector<vector<long long>>(k+1,vector<long long>(d,-INF)));
         dp[0][0][0] = 0;
+        for (int i=1; i<=n; ++i)
+            dp[i][0][0] = 0;
 
         for (int i=1; i<=n; ++i) {
-            for (int kk=0; kk<=min(i,k); ++kk) {
+            for (int kk=1; kk<=min(i,k); ++kk) {
                 for (int rem=0; rem<d; ++rem) {
                     dp[i][kk][rem] = dp[i-1][kk][rem];
-                    if (kk>0)
-                        dp[i][kk][rem] = max(dp[i][kk][rem],
-                                             dp[i-1][kk-1][((rem-(v[i-1]%d))+d)%d]+v[i-1]);
+                    
+                    dp[i][kk][rem] = max(dp[i][kk][rem],
+                                         dp[i-1][kk-1][((rem-(v[i-1]%d))+d)%d]+v[i-1]);
                 }
             }
         }
