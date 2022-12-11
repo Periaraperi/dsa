@@ -20,9 +20,9 @@ int main()
         for (auto& i:v) cin >> i;
         
         auto INF = numeric_limits<long long>::min();
+        // dp[i][k][rem] = maximum sum gotten from subset of length k in prefix 1...i, such that sum mod(d) = rem 
         vector<vector<vector<long long>>> dp(n+1,vector<vector<long long>>(k+1,vector<long long>(d,-INF)));
-        dp[0][0][0] = 0;
-        for (int i=1; i<=n; ++i)
+        for (int i=0; i<=n; ++i)
             dp[i][0][0] = 0;
 
         for (int i=1; i<=n; ++i) {
@@ -35,6 +35,7 @@ int main()
                 }
             }
         }
+
         if (dp[n][k][0]<0) cout << "-1\n";
         else               cout << dp[n][k][0] << '\n';
     }
