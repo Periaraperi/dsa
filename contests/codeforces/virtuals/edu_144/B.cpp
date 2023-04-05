@@ -18,18 +18,14 @@ int main()
         } else {
             bool ok = false;
             string ans;
-            for (int len=2; len<=n; ++len) {
-                for (int i=0; i<=n-len; ++i) {
-                    string sub = a.substr(i,len);
-                    if (b.find(sub)!=string::npos) {
-                        ok = true;
-                        ans.push_back('*');
-                        ans += sub;
-                        ans.push_back('*');
-                        break;
-                    }
-                }
-                if (ok) {
+            int len = 2;
+            for (int i=0; i<=n-len; ++i) {
+                string sub = a.substr(i,len);
+                if (b.find(sub)!=string::npos) {
+                    ok = true;
+                    ans.push_back('*');
+                    ans += sub;
+                    ans.push_back('*');
                     break;
                 }
             }
