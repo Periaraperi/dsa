@@ -10,7 +10,7 @@ int main()
     while(t--) {
         long long a,b; cin >> a >> b;
         long long ans = a+b;
-        for (long long i=0; i*i<=a+b+1; ++i) {
+        for (long long i=0; ans>=i; ++i) {
             auto x = (long long)ceil((double)a/(i+1))+(long long)ceil((double)b/(i+1))+i;
             ans = min(ans,x);
         }
