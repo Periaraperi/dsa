@@ -20,7 +20,6 @@ int main()
            ++deg[u];
         }
 
-        vector<bool> erased(n,false);
         vector<int> leaves;
         for (int i=0; i<n; ++i) {
             int d = deg[i];
@@ -51,50 +50,3 @@ int main()
     }
     return 0;
 }
-
-/* 
-        
-        int cnt = 0;
-        for (int i=0; i<n; ++i) {
-            if (out_deg[i]==0) {
-                ++cnt;
-            }
-        }
-        if (cnt==1) {
-            int center = -1;
-            for (int i=0; i<n; ++i) {
-               if (out_deg[i]==0) {
-                   center = i;
-                   break;
-               }
-            }
-            
-            int node;
-            bool ok = false;
-            for (int i=0; i<n; ++i) {
-               if (i!=center) {
-                   for (auto u:g[i]) {
-                       if (u==center) {
-                           ok = true;
-                           node = i;
-                           break;
-                       }
-                   }
-                   if (ok) break;
-               }
-            }
-
-            cout << in_deg[center] << " " << in_deg[node] << '\n';
-        
-        } else {
-            int center = -1;
-            for (int i=0; i<n; ++i) {
-                if (in_deg[i]==0) {
-                    center = i;
-                    break;
-                }
-            }
-            int node = g[center].front();
-            cout << out_deg[center] << " " << out_deg[node] << '\n';
-        }
- */
