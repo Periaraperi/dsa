@@ -55,7 +55,6 @@ int main()
                 if (sm>pairs) cout << mn << " ";
                 else cout << mn-my_ceil((pairs-sm),n) << " ";
             } else {
-                auto init_max = v[n-1];
                 for (int i=0; i<n-1; ++i) // last n-1 increments
                     v[i] += (k-i);
                 auto mn = INF;
