@@ -13,12 +13,7 @@ int main()
         for (auto& i:a) 
             cin >> i;
         
-        int64_t ans = 0; // initial answer where 'good' split points are absent
-        for (int len=2; len<=n; ++len) {
-            for (int i=0,j=len-1; j<n; ++i,++j) {
-                ans += (j-i);
-            }
-        }
+        int64_t ans = (1LL*n*(n-1)*(n+1))/6; // initial answer where 'good' split points are absent
 
         // precalculate mins on semi intervals
         constexpr int INF = 1e9 + 100;
