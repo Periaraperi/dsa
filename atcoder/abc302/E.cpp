@@ -9,40 +9,29 @@ int main()
     int t = 1; //cin >> t;
     while(t--) {
         int n,q; cin >> n >> q;
-        set<int> in;
-        set<int> not_in;
         vector<set<int>> g(n+1);
-        for (int i=1; i<=n; ++i) not_in.insert(i);
-        vector<int> cnt(n+1);
 
+        int ans = n;
         while (q--) {
             int x; cin >> x;
             if (x==1) {
                 int a,b; cin >> a >> b;
+                if (g[a].empty()) --ans;
+                if (g[b].empty()) --ans;
                 g[a].insert(b);
                 g[b].insert(a);
-                ++cnt[a];
-                ++cnt[b];
-                not_in.erase(a);
-                not_in.erase(b);
-                in.insert(a);
-                in.insert(b);
             } else {
                 int a; cin >> a;
                 for (auto i:g[a]) {
-                    --cnt[i];
-                    if (cnt[i]==0) {
-                        not_in.insert(i);
-                        in.erase(i);
-                    }
+                    if (g[i].size()==1) ++ans;
                     g[i].erase(a);
                 }
-                cnt[a] = 0;
-                g[a].clear();
-                not_in.insert(a);
-                in.erase(a);
+                if (!g[a].empty()) {
+                    ++ans;
+                    g[a].clear();
+                }
             }
-            cout << not_in.size() << '\n';
+            cout << ans << '\n';
         }
     }
     return 0;
