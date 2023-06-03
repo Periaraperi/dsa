@@ -27,8 +27,8 @@ int main()
         map<pair<int,int>,int> freq;
         for (int i=0; i<n; ++i) {
             pair<int,int> p = {0,0};
-            p.first = *upper_bound(v1.begin(),v1.end(),v[i].first);
-            p.second = *upper_bound(v2.begin(),v2.end(),v[i].second);
+            p.first =  *lower_bound(v1.begin(),v1.end(),v[i].first);
+            p.second = *lower_bound(v2.begin(),v2.end(),v[i].second);
             ++freq[p];
         }
         
