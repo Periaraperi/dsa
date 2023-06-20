@@ -30,10 +30,10 @@ int main()
 		vector<bool> vis(n,false);
 		vector<int64_t> dp(n,0LL);
 		for (int i=0; i<n-1; ++i) {
-			int a,b; cin >> a >> b;
-			--a; --b;
-			tree[a].push_back(b);
-			tree[b].push_back(a);
+            int a,b; cin >> a >> b;
+            --a; --b;
+            tree[a].push_back(b);
+            tree[b].push_back(a);
 		}
 		dfs(0,tree,vis,-1,dp);
 		int q; cin >> q;
