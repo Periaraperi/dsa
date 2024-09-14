@@ -1,43 +1,48 @@
 #include <algorithm>
+#include <cstdint>
+#include <iostream>
 #include <vector>
 using namespace std;
 
 class Solution {
+    auto generate_table(const vector<int>& nums, int k)
+    {
+        int N = nums.size();
+        int M = 1<<7;
+
+        vector<vector<vector<bool>>> dp(N+1, vector<vector<bool>>(k+1, vector<bool>(M, false)));
+        dp[0][0][0] = true;
+
+        for (int i=0; i<N; ++i) {
+            dp[i+1] = dp[i];
+
+            for (int len=0; len<k; ++len) {
+                for (uint8_t x=0; x<M; ++x) {
+                    if (dp[i][len][x]) {
+                        dp[i+1][len+1][x | (uint8_t)nums[i]] = true;
+                    }
+                }
+            }
+        }
+        return dp;
+    }
 public:
     int maxValue(vector<int>& nums, int k) 
     {
         int N = (int)nums.size();
-        int M = (1 << 8) - 1;
-
-        auto generate_dp_table = [&](const vector<int>& v) {
-            vector<vector<vector<bool>>> dp(N+1, vector<vector<bool>>(k+1, vector<bool>(M, false)));
-            dp[0][0][0] = true;
-
-            for (int i=0; i<N; ++i) {
-                dp[i+1] = dp[i];
-                for (int len=0; len<k; ++len) {
-                    for (int x=0; x<M; ++x) {
-                        if (dp[i][len][x]) {
-                            dp[i+1][len+1][x | v[i]] = true;
-                        }
-                    }
-                }
-            }
-
-            return dp;
-        };
+        uint8_t M = (1 << 7);
 
         auto nums_reversed{nums};
         reverse(nums_reversed.begin(), nums_reversed.end());
 
-        const auto pref_dp = generate_dp_table(nums);
-        const auto suff_dp = generate_dp_table(nums_reversed);
+        const auto dp_pref = generate_table(nums, k);
+        const auto dp_suff = generate_table(nums_reversed, k);
 
         int ans = 0;
-        for (int i=0; i<N; ++i) {
-            for (int n=0; n<M; ++n) {
-                for (int m=0; m<M; ++m) {
-                    if (pref_dp[i][k][n] && suff_dp[N-i][k][m]) {
+        for (int i=0; i<=N; ++i) {
+            for (uint8_t n=0; n<M; ++n) {
+                for (uint8_t m=0; m<M; ++m) {
+                    if (dp_pref[i][k][n] && dp_suff[N-i][k][m]) {
                         ans = max(ans, n^m);
                     }
                 }
@@ -51,4 +56,8 @@ public:
 int main()
 {
     Solution s{};
+
+    // big test case
+    vector<int> v{119,70,33,88,62,37,85,18,54,21,81,47,64,70,28,95,11,104,112,68,120,45,7,19,7,93,12,86,79,78,61,36,118,67,125,106,31,113,98,124,57,64,75,58,13,38,92,55,107,123,1,123,11,105,125,69,58,31,24,33,82,123,77,117,22,113,88,68,104,80,48,116,118,60,91,102,116,46,88,103,86,117,54,33,79,8,60,11,105,94,52,95,55,25,3,108,25,96,58,48,117,33,34,22,83,25,114,44,62,41,11,55,25,100,119,89,92,109,34,73,13,33,46,27,111,36,86,121,1,19,46,18,2,26,127,82,45,49,104,4,50,99,25,18,40,106,52,8,21,71,76,122,95,16,124,1,45,11,9,115,97,1,11,36,94,53,97,38,94,27,99,4,27,12,112,65,9,106,80,127,64,35,125,122,118,116,112,101,69,17,93,32,36,35,3,121,59,69,12,35,16,9,108,74,98,94,70,122,116,5,123,117,86,47,69,16,93,20,26,71,109,100,40,81,53,77,82,85,3,121,44,69,27,62,93,65,38,51,99,40,17,99,31,2,35,41,78,70,45,34,121,61,75,95,72,12,70,8,113,121,109,65,104,80,60,33,29,79,26,126,117,65,1,53,59,120,112,117,61,7,76,31,93,23,4,49,6,24,113,3,80,29,58,88,94,7,116,124,117,88,80,27,43,40,117,110,45,31,107,3,68,98,107,63,69,104,80,38,42,123,35,34,94,119,107,127,10,71,4,15,122,9,21,45,43,97,74,72,54,83,5,42,55,62,67,40,22,91,79,113,82,38,98,1,1,21,6,117,77,99,93,52,78,7,43,125,64,63,105,31,73,45,36,96,87,74,78,21,68,10,70,108,70,17,38,105,6,12,28,84,7,25,115,96,61,57,29,98,106,42};
+    std::cerr << s.maxValue(v, 8);
 }
