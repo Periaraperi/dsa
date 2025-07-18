@@ -13,8 +13,16 @@ switch(args[0])
         Console.WriteLine("{0}", a.WinningPlayerCount(n, pick));
         break;
     case "B":
-        throw new NotImplementedException();
-        //break;
+        var b = new B();
+        
+        List<int[][]> grids = new();
+        grids.AddRange(
+            [[1,0,0],[0,0,0],[0,0,1]],
+            [[0,1],[0,1],[0,0]]);
+        foreach (var g in grids) {
+            Console.WriteLine(b.MinFlips(g));
+        }
+        break;
     case "C":
         throw new NotImplementedException();
         //break;
