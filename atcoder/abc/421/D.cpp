@@ -89,7 +89,7 @@ int main()
                 ans += vt[i].k;
             }
         }
-        // will meet at most 1 times if on same row or column and ranges overlap and range len is odd
+        // will meet at most 1 times if on same row or column and ranges overlap and len of line between taka and aoki is odd
         else if (opposite_dir(vt[i].dir, va[i].dir)) {
             range range_taka {-1, -1};
             range range_aoki {1, 1};
