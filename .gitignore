@@ -5,3 +5,4 @@ obj/
 bin/
 CMakeLists.txt
 compile_commands.json
+experiments/
