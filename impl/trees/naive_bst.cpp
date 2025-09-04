@@ -1,3 +1,4 @@
+#include <iostream>
 #include <utility>
  
 // Naive implementation of bst.
@@ -27,8 +28,36 @@ struct naive_bst {
     ~naive_bst() 
     { dealloc_nodes(root); }
 
+    [[nodiscard]]
+    node* find(const int target)
+    { return find_impl(target); }
+
+    void insert(const int value)
+    { insert_impl(value); }
+
+    void erase(const int target)
+    { erase_impl(target); }
+
+    void erase(node* x)
+    { if (x != nullptr) subtree_delete(x); }
+
+    [[nodiscard]]
+    size_t size() noexcept
+    { return count; }
+
+    [[nodiscard]]
+    bool empty() noexcept
+    { return count == 0; }
+
+    void print()
+    { in_order_traversal(root); }
+
+    void println()
+    { in_order_traversal(root); std::cout << '\n'; }
+
 private:
     node* root {nullptr};
+    size_t count {};
 
     // assumes that x is not nullptr.
     // returns first element in the subtree of node (x).
@@ -84,6 +113,7 @@ private:
             x->left = y;
         }
         y->parent = x;
+        ++count;
     }
 
     // assumes that x is not nullptr.
@@ -96,6 +126,7 @@ private:
             x->right = y;
         }
         y->parent = x;
+        ++count;
     }
 
     // assumes that x is not nullptr.
@@ -111,6 +142,7 @@ private:
                 else p->right = nullptr;
             }
             delete x;
+            --count;
         }
         // case 2: either a left or right child exists.
         // do the swapping of contents with predecessor or successor and recursively
@@ -129,6 +161,71 @@ private:
         }
     }
 
+    [[nodiscard]]
+    node* find_impl(const int target)
+    {
+        auto x{root};
+        while (x != nullptr && x->val != target) {
+            if (target < x->val) {
+                x = x->left;
+            }
+            else {
+                x = x->right;
+            }
+        }
+        return x;
+    }
+
+    void insert_impl(const int value)
+    {
+        if (find_impl(value) != nullptr) return;
+
+        if (root == nullptr) {
+            root = new node{value};
+            ++count;
+            return;
+        }
+
+        auto x{root};
+        while (x != nullptr) {
+            if (value < x->val) {
+                if (x->left == nullptr) {
+                    auto y {new node{value}};
+                    insert_before(x, y);
+                    return;
+                }
+                else {
+                    x = x->left;
+                }
+            }
+            else {
+                if (x->right == nullptr) {
+                    auto y {new node{value}};
+                    insert_after(x, y);
+                    return;
+                }
+                else {
+                    x = x->right;
+                }
+            }
+        }
+    }
+
+    void erase_impl(const int target)
+    {
+        auto x {find_impl(target)};
+        if (x == nullptr) return;
+        subtree_delete(x);
+    }
+
+    void in_order_traversal(const node* const x)
+    {
+        if (x == nullptr) return;
+        in_order_traversal(x->left);
+        std::cout << x->val << ' ';
+        in_order_traversal(x->right);
+    }
+
     void dealloc_nodes(node* x)
     {
         if (x == nullptr) return;
@@ -142,6 +239,11 @@ private:
  
 int main() 
 {
+    peria::naive_bst st{};
+    for(int i{}; i<10; ++i) {
+        st.insert(i);
+    }
+    std::cout << st.size() << '\n';
+    st.println();
     return 0;
 }
-
