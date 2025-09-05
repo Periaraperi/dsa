@@ -253,13 +253,23 @@ private:
         // case 1: x is leaf (base case)
         if (x->left == nullptr && x->right == nullptr) {
             // x could be leaf and root. (if only 1 element in tree)
-            if (auto p {x->parent}; p != nullptr) {
+            auto p {x->parent}; 
+            if (p != nullptr) {
                 // detach x from parent
                 if (p->left == x) p->left = nullptr;
                 else p->right = nullptr;
             }
             delete x;
             --count;
+            if (count == 0) root = nullptr; // tree is empty
+            while (p != nullptr) {
+                update(p);
+                const auto bf {balance_factor(p)};
+                if (bf == 2 || bf == -2) {
+                    rebalance(p);
+                }
+                p = p->parent;
+            }
         }
         // case 2: either a left or right child exists.
         // do the swapping of contents with predecessor or successor and recursively
@@ -364,11 +374,5 @@ private:
  
 int main() 
 {
-    peria::avl_tree st{};
-    for (int i{}; i<100; ++i) {
-        st.insert(i);
-    }
-    st.println();
-    std::cout << st.tree_height() << '\n';
     return 0;
 }
