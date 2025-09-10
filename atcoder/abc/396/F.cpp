@@ -44,8 +44,7 @@ int main()
     fenwick inversions{MAX};
     int64_t total_inversions{};
 
-    // each fenwick tree will operate on values from [1, m] instead of [0, m-1] to work around special 0 index in fenwick tree
-    // basically increase all diff_array values and input list values by 1 when storing in fenwick
+    // fenwick tree will operate on values from [1, m] instead of [0, m-1] to work around special 0 index in fenwick tree
 
     for (const auto& i:a) {
         const auto count_more_than_i {inversions.query(MAX)-inversions.query(i+1)};
