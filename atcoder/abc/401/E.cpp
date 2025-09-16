@@ -1,5 +1,4 @@
 #include <iostream>
-#include <set>
 #include <vector>
  
 using namespace std;
@@ -56,18 +55,29 @@ int main()
         graph[b].emplace_back(a);
     }
 
-    peria::dsu dsu(n+1); // will track nodes with labels <= k in same sets 
-    set<int> bad; // nodes with label > k in bad set
+    // will track nodes with labels <= k in same sets. Should tell us
+    // if 1..k could be 1 connected component.
+    peria::dsu dsu(n+1);
 
+    int bad_count {};
+    vector<int> bad(n+1, false); // instead of set we can use boolean array and counter to count bad nodes. Removing extra log
     vector<int> ans(n+1, -1);
+
     for (int k{1}; k<=n; ++k) {
-        bad.erase(k); // maybe k was bad
+        if (bad[k]) { // maybe k was bad
+            bad[k] = false;  
+            --bad_count;
+        }
         for (const auto& v:graph[k]) {
-            if (v>k) bad.insert(v);
+            if (v>k && !bad[v]) {
+                bad[v] = true;
+                ++bad_count;
+            }
             if (v<k) dsu.union_set(k, v);
         }
-        if (dsu.set_size(k) == k) ans[k] = static_cast<int>(bad.size());
+        if (dsu.set_size(k) == k) ans[k] = bad_count;
     }
+
     for (int k{1}; k<=n; ++k) {
         cout << ans[k] << '\n';
     }
