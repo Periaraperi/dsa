@@ -13,8 +13,8 @@ int main()
     for (const auto& c:s) {
         if (stk.empty()) stk.push(c);
         else {
-            if (c=='(' || c=='[' || c=='<') stk.push(c);
-            else if (const auto t {stk.top()}; (c==')' && t=='(') || (c==']' && t=='[') || (c=='>' && t=='<')) stk.pop();
+            if (const auto t {stk.top()}; (c==')' && t=='(') || (c==']' && t=='[') || (c=='>' && t=='<')) stk.pop();
+            else stk.push(c);
         }
     }
     if (stk.empty()) cout << "Yes\n";
