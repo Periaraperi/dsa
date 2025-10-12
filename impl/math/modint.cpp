@@ -63,8 +63,8 @@ struct modint {
     [[nodiscard]] friend constexpr modint operator+(int64_t x, const modint& rhs) noexcept
     { return modint{x}+rhs; }
 
-    [[nodiscard]] friend constexpr modint operator+(const modint& rhs, int64_t x) noexcept
-    { return rhs+modint{x}; }
+    [[nodiscard]] friend constexpr modint operator+(const modint& lhs, int64_t x) noexcept
+    { return lhs+modint{x}; }
 
     [[nodiscard]] friend constexpr modint operator-(const modint& lhs, const modint& rhs) noexcept
     { return modint{(static_cast<int64_t>(lhs.value_)-static_cast<int64_t>(rhs.value_)+M)%M}; }
@@ -72,8 +72,8 @@ struct modint {
     [[nodiscard]] friend constexpr modint operator-(int64_t x, const modint& rhs) noexcept
     { return modint{x}-rhs; }
 
-    [[nodiscard]] friend constexpr modint operator-(const modint& rhs, int64_t x) noexcept
-    { return rhs-modint{x}; }
+    [[nodiscard]] friend constexpr modint operator-(const modint& lhs, int64_t x) noexcept
+    { return lhs-modint{x}; }
 
     [[nodiscard]] friend constexpr modint operator*(const modint& lhs, const modint& rhs) noexcept
     { return modint{(static_cast<int64_t>(lhs.value_)*static_cast<int64_t>(rhs.value_))%M}; }
@@ -81,8 +81,8 @@ struct modint {
     [[nodiscard]] friend constexpr modint operator*(int64_t x, const modint& rhs) noexcept
     { return modint{x}*rhs; }
 
-    [[nodiscard]] friend constexpr modint operator*(const modint& rhs, int64_t x) noexcept
-    { return rhs*modint{x}; }
+    [[nodiscard]] friend constexpr modint operator*(const modint& lhs, int64_t x) noexcept
+    { return lhs*modint{x}; }
 
     [[nodiscard]] friend constexpr bool operator==(const modint& lhs, const modint& rhs) noexcept
     { return lhs.value_ == rhs.value_; }
@@ -99,7 +99,6 @@ struct modint {
 private:
     int value_ {};
 };
-
 
 struct combinations {
     explicit combinations(int n)
