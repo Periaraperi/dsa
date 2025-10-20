@@ -1,29 +1,42 @@
 #include <iostream>
 #include <vector>
-
+ 
 using namespace std;
 
-int dfs(int v, const vector<vector<int>>& tree, vector<int>& ans)
+void dfs(int v, const vector<vector<int>>& tree, vector<int>& subs)
 {
-    if(tree[v].size()==0) return 1;
-    for(auto n:tree[v]) {
-        ans[v] += dfs(n,tree,ans);
+    if (tree[v].empty()) {
+        subs[v] = 0;
+        return;
     }
-    return ans[v]+1;
+    int s {};
+    for (const auto& u:tree[v]) {
+        dfs(u, tree, subs);
+        s += subs[u]+1;
+    }
+    subs[v] = s;
 }
-
-int main()
+ 
+int main() 
 {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
     int n; cin >> n;
-    vector<vector<int>> tree(n+1);
-    for(int i=1; i<n; ++i) {
-        int empl; cin >> empl;
-        tree[empl].push_back(i+1);
+    vector<vector<int>> tree(n);
+    for (int i{1}; i<=n-1; ++i) {
+        int a; cin >> a;
+        --a;
+        tree[a].emplace_back(i);
     }
-    vector<int> ans(n+1);
-    dfs(1,tree,ans);
-    for(int i=1; i<=n; ++i)
-        cout << ans[i] << " ";
+
+    vector<int> subs(n, 0);
+    dfs(0, tree, subs);
+
+    for (int i{}; i<n; ++i) {
+        cout << subs[i] << " ";
+    }
+    cout << '\n';
 
     return 0;
 }
+
