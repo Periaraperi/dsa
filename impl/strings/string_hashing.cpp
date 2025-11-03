@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unordered_set>
 #include <vector>
 #include <algorithm>
 #include <utility>
@@ -218,17 +219,48 @@ std::vector<dup_info> count_duplicates(const std::vector<std::string>& strs)
     return ans;
 }
 
+[[nodiscard]]
+int number_of_distinct_substrings(const std::string& s)
+{
+    peria::rolling_hash_powers<peria::mint::MOD, 31> rhp {s.size()};
+    peria::rolling_hash rh {s, rhp};
+
+    const int n {static_cast<int>(s.size())};
+    
+    int ans {};
+    for (int len{1}; len<=n; ++len) {
+        std::unordered_set<int> unique_hashes; // store length len substring hashes.
+        for (int i{}; i+len-1<n; ++i) {
+            const auto l {i+1}; // 1-based indexing
+            const auto r {i+len-1+1}; // 1-based indexing
+            unique_hashes.insert(rh.sub_hash(l, r, rhp));
+        }
+        ans += unique_hashes.size();
+    }
+    
+    return ans;
+}
+
 int main() 
 {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
-    
-    std::vector<std::string> strs {"periaraperi", "laga", "laggert", "abc", "abacaba", "abc", 
-                                   "laga", "peria", "poyera", "abc", "laga", "poyera", "daba", "baba", "caba"};
 
-    const auto dups {count_duplicates(strs)};
-    for (const auto& [s, count]:dups) {
-        std::cout << s << " - " << count << '\n';
+    {
+        std::cout << "String Dup Test\n";
+        std::vector<std::string> strs {"periaraperi", "laga", "laggert", "abc", "abacaba", "abc", 
+                                       "laga", "peria", "poyera", "abc", "laga", "poyera", "daba", "baba", "caba"};
+
+        const auto dups {count_duplicates(strs)};
+        for (const auto& [s, count]:dups) {
+            std::cout << s << " - " << count << '\n';
+        }
+    }
+
+    {
+        std::cout << "\nDistinct SubStrings Test\n";
+        std::string str{"abacabac"};
+        std::cout << "Str = " << str << " - " << number_of_distinct_substrings(str) << '\n';
     }
     
     return 0;
