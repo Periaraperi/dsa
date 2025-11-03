@@ -203,7 +203,7 @@ std::vector<dup_info> count_duplicates(const std::vector<std::string>& strs)
     // time complexity of O(n*log(n)*m), where n is length of list, and m is the length of largest string.
     // By getting their hashes, and sorting on hashes we remove extra (*m).
     // So we get O(n*m + n*log(n)) --> nlogn for sorting and n*m for hash precomputation (for iterating over each string).
-    sort(hashes.begin(), hashes.end(), [](const auto& a, const auto& b) { return a.first.hash() < b.first.hash(); }); 
+    std::sort(hashes.begin(), hashes.end(), [](const auto& a, const auto& b) { return a.first.hash() < b.first.hash(); }); 
 
     std::vector<dup_info> ans; ans.reserve(256);
     for (int i{1}; i<n; ++i) {
