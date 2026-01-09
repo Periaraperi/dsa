@@ -65,7 +65,7 @@ public:
     explicit dynamic_segment_tree(int n_)
         :n{n_}
     {}
-    dynamic_segment_tree()
+    ~dynamic_segment_tree()
     { clean_tree(root); }
 
     [[nodiscard]] int range_sum(int ql, int qr) 
